@@ -1,4 +1,4 @@
-A `Flask`__ blog app built on `GAE`__ as a study homework.
+A Flask_ blog app built on GAE_ as a study homework.
 
-.. http://flask.pocoo.org/
-.. http://code.google.com/appengine/
+.. _Flask: http://flask.pocoo.org/
+.. _GAE: http://code.google.com/appengine/
