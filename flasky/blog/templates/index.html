@@ -2,14 +2,14 @@
 
 {% block body %}
 {% if session.logged_in %}
-<form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
+<form action="{{ url_for('add') }}" method="post" class="add-entry">
   <dl>
     <dt>Title:</dt>
-    <dd><input type=text size=30 name=title></dd>
+    <dd><input type=text size=30 name="title"></dd>
     
     <dt>Text:</dt>
-    <dd><textarea name=text rows=5 cols=40></textarea></dd>
-    <dd><input type=submit value=Share></dd>
+    <dd><textarea name="content" rows=5 cols=40></textarea></dd>
+    <dd><input type="submit" value=Share></dd>
 
   </dl>
 </form>
@@ -25,3 +25,4 @@
   <li><em>Unbelievable. No entries here so far!</em></li>
 {% endfor %}
 </ul>
+{% endblock body %}

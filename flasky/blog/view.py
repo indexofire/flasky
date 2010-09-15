@@ -1,20 +1,36 @@
 # -*- coding: utf-8 -*-
+from flask import Flask
+import settings
+app = Flask('blog')
+app.config.from_object('blog.settings')
+
 from flask import render_template
 from flask import redirect
 from flask import url_for
 from flask import request
 from flask import abort
 from flask import flash
+from flask import session
 from flask import get_flashed_messages
 from google.appengine.ext import db
-from blog import app
+
+import settings
+
+DEBUG             = True
+CSRF_ENABLED      = True
+SECRET_KEY        = '64Qj&f62Fa(fa&_A98a0-1ZlkfFaGz9A$69'
+CSRF_SESSION_LKEY = '69JFJ^$(D#!S;LKdeh8asSNJ283403808=+'
+USERNAME          = 'indexofire'
+PASSWORD          = '78100188274867'
+
+
 
 
 class Entry(db.Model):
     """
     The entries db table of blog
     """
-    title = db.StringProperty(required=True)
+    title = db.StringProperty()
     content = db.StringProperty(multiline=True)
     date = db.DateTimeProperty(auto_now_add=True)
 
@@ -67,3 +83,7 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run()

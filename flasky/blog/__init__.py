@@ -2,8 +2,13 @@
 from flask import Flask
 import settings
 
-app = Flask(__name__)
-app.config.from_object('blog.settings')
+DEBUG             = True
+CSRF_ENABLED      = True
+SECRET_KEY        = '64Qj&f62Fa(fa&_A98a0-1ZlkfFaGz9A$69'
+CSRF_SESSION_LKEY = '69JFJ^$(D#!S;LKdeh8asSNJ283403808=+'
+USERNAME          = 'indexofire'
+PASSWORD          = '78100188274867'
 
-import application
-import api
+app = Flask('blog')
+app.config.from_object('blog')
+
