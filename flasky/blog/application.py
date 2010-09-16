@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask
-import settings
-app = Flask('blog')
-app.config.from_object('blog.settings')
-
+from google.appengine.ext import db
 from flask import render_template
 from flask import redirect
 from flask import url_for
@@ -12,8 +8,8 @@ from flask import abort
 from flask import flash
 from flask import session
 from flask import get_flashed_messages
-from google.appengine.ext import db
-
+from blog import app
+app.config.from_object('blog.settings')
 
 class Entry(db.Model):
     """
@@ -44,6 +40,7 @@ def entry(id):
         return redirect(url_for('index'))
     return render_template('entry.html', entry=entry)
 
+
 @app.route('/dashboard/')
 def dashboard():
     pass
@@ -69,6 +66,8 @@ def add():
 @app.route('/entry/<int:id>/delete')
 def delete(id):
     entry = Entry.get_by_id(id)
+
+#@app.route('/entry/<int:id>/edit')
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():

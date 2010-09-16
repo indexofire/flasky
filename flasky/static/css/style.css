@@ -1,22 +1,143 @@
-body            { font-family: sans-serif; background: #eee; }
-a, h1, h2       { color: #377BA8; }
-h1, h2          { font-family: 'Georgia', serif; margin: 0; }
-h1              { border-bottom: 2px solid #eee; }
-h2              { font-size: 1.2em; }
+/* ---------- reset css start -----------*/
+html {
+    color:#000;
+    background:#FFF;
+}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td {
+    margin:0;
+    padding:0;
+    margin-bottom: 0.8em;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset,img {
+    border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var,optgroup {
+    font-style:inherit;
+    font-weight:inherit;
+}
+del,ins {
+    text-decoration:none;
+}
+li {
+    list-style:none;
+}
+caption,th {
+    text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-size:100%;
+    font-weight:normal;
+}
+q:before,q:after {
+    content:'';
+}
+abbr,acronym {
+    border:0;
+    font-variant:normal;
+}
+sup {
+    vertical-align:baseline;
+}
+sub {
+    vertical-align:baseline;
+}
+legend {
+    color:#000;
+}
+input,button,textarea,select,optgroup,option {
+    font-family:inherit;
+    font-size:inherit;
+    font-style:inherit;
+    font-weight:inherit;
+}
+input,button,textarea,select{
+    *font-size:100%;
+}
+/* ----------- reset css end -------------*/
 
-.page { margin: 2em auto; width: 950px; border: 5px solid #ccc;
-                  padding: 0.8em; background: white; }
-.entries        { list-style: none; margin: 0; padding: 0; }
-.entries li     { margin: 0.8em 1.2em; }
-.entries li h2  { margin-left: -1em; }
-.add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
-.add-entry dl   { font-weight: bold; }
-.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
-                  margin-bottom: 1em; background: #fafafa; }
-.flash          { background: #CEE5F5; padding: 0.5em;
-                  border: 1px solid #AACBE2; }
-.error          { background: #F0D6D6; padding: 0.5em; }
+/* ----------- html element define -------------*/
+body {
+    font-family: sans-serif;
+    background: #eee;
+    line-height: 125%;
+}
+a,h1,h2 {
+    color: #377BA8;
+}
+h1, h2 {
+    font-family: 'Georgia', sans-serif;
+}
+h1 {
+    font-size: 2em;
+}
+h1 a {
+    color: #377BA8;
+    padding: 0.2em 0.4em;
+}
+h1 a:hover{
+    background: #393939;
+    color: #F8F8F8;
+}
+h2 {
+    font-size: 1.8em;
+}
+h3 {
+    font-size: 1.6em;
+}
+h4 {
+    font-size: 1.4em;
+}
+h5 {
+    font-size: 1.2em;
+}
+h6 {
+    font-size: 1.0em;
+}
+.page {
+    margin: auto;
+    width: 950px;
+    border: 5px solid #CCC;
+    padding: 1.2em;
+    background: white;
+}
+ul.entries {
+    list-style: none;
+}
+ul.entries li {
+    margin: 0.8em 1.2em;
+}
+ul.entries li h2 a:hover {
+    background: #393939;
+    color: #E8E8E8;
+}
+.add-entry {
+    font-size: 1em;
+    border-bottom: 1px solid #CCC;
+}
+.add-entry dl {
+    font-weight: bold;
+}
+.metanav {
+    text-align: right;
+    font-size: 1em;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    background: #FAFAFA;
+}
+.flash {
+    background: #CEE5F5;
+    padding: 0.5em;
+    border: 1px solid #AACBE2;
+}
+.error {
+    background: #F0D6D6;
+    padding: 0.5em;
+}
 pre {
-    font-family: 'Lucida Console', 'Bitstream Vera Sans Mono', inconsolata, monospace;
+    font-family: inconsolata, 'Lucida Console', 'Bitstream Vera Sans Mono', monospace;
     font-size: 14px;
 }
