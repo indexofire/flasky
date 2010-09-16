@@ -9,7 +9,11 @@ from flask import flash
 from flask import session
 from flask import get_flashed_messages
 from blog import app
+from blog.utils import login_required
+
+
 app.config.from_object('blog.settings')
+
 
 class Entry(db.Model):
     """
@@ -17,7 +21,7 @@ class Entry(db.Model):
     """
     title   = db.StringProperty()
     content = db.TextProperty()
-    slug    = db.StringProperty()
+    #slug    = db.StringProperty()
     date    = db.DateTimeProperty(auto_now_add=True)
     #status  = db.StringProperty(required=True, choices=set(["published", "draft"]))
 
@@ -29,7 +33,7 @@ class Tag(db.Model):
     
 @app.route('/')
 def index():
-    entries = db.GqlQuery("SELECT * FROM Entry ORDER BY date DESC LIMIT 10")
+    entries = db.GqlQuery("SELECT * FROM Entry ORDER BY date DESC LIMIT %s" % app.config['ARTICLE_PERPAGE'])
     return render_template('index.html', entries=entries)
 
 
@@ -46,9 +50,10 @@ def dashboard():
     pass
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/entry/add', methods=['POST'])
 def add():
-    if not session.get('logged_in'): abort(401)
+    if not session.get('logged_in'):
+        abort(401)
     title   = request.form['title']
     content = request.form['content']
     #slug    = request.form['slug']
@@ -63,12 +68,37 @@ def add():
     return redirect(url_for('index'))
 
 
+@app.route('/entry/<int:id>/delete', methods=['GET'])
+def delete(id):
+    if not session.get('logged_in'):
+        abort(401)
+    entry = db.GqlQuery("SELECT * FROM Entry WHERE id = %s" % id)
+    entry.delete()
+    return redirect(url_for('index'))
+
+
+@app.route('/entry/<int:id>/edit', methods=['GET', 'POST'])
+def edit(id):
+    if not session.get('logged_in'):
+        abort(401)
+    entry = Entry.get_by_id(id)
+    if request.method == 'POST':
+        entry.title   = request.form['title']
+        entry.content = request.form['content']
+        entry.put()
+        return redirect(url_for('index'))
+    else:
+        return render_template('edit.html', entry=entry)
+        
+    
+
 @app.route('/entry/<int:id>/delete')
 def delete(id):
-    entry = Entry.get_by_id(id)
-
-#@app.route('/entry/<int:id>/edit')
+    if not session.get('logged_in'):
+        abort(401)
+    return redirect(url_for('index'))
     
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None

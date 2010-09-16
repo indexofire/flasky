@@ -5,7 +5,7 @@
 {% for entry in entries %}
   <li>
     <h2><a href="entry/{{ entry.key().id() }}">{{ entry.title }}</a></h2>
-    <p>{{ entry.date }}</p>
+    <p>{{ entry.date }} | <a href="entry/{{ entry.key().id() }}/edit">edit</a> | <a href="entry/{{ entry.key().id() }}/delete">delete</a></p>
     <div>{{ entry.content|safe }}</div>
   </li>
 {% else %}
