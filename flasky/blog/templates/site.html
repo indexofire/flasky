@@ -3,12 +3,16 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <title>Flasky</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prettify.css') }}">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/prettify.js') }}"></script>
+  {% block extra_head %}{% endblock %}
 </head>
 
-<body>
+<body onload="prettyPrint()">
 <div class="page">
-  <h1>Flasky</h1>
+  <h1><a href="/">Flasky</a></h1>
   <div class="metanav">
   {% if not session.logged_in %}
     <a href="{{ url_for('login') }}">log in</a>

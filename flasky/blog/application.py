@@ -14,27 +14,23 @@ from flask import session
 from flask import get_flashed_messages
 from google.appengine.ext import db
 
-import settings
-
-DEBUG             = True
-CSRF_ENABLED      = True
-SECRET_KEY        = '64Qj&f62Fa(fa&_A98a0-1ZlkfFaGz9A$69'
-CSRF_SESSION_LKEY = '69JFJ^$(D#!S;LKdeh8asSNJ283403808=+'
-USERNAME          = 'indexofire'
-PASSWORD          = '78100188274867'
-
-
-
 
 class Entry(db.Model):
     """
     The entries db table of blog
     """
-    title = db.StringProperty()
+    title   = db.StringProperty()
     content = db.StringProperty(multiline=True)
-    date = db.DateTimeProperty(auto_now_add=True)
+    slug    = db.StringProperty()
+    date    = db.DateTimeProperty(auto_now_add=True)
+    #status  = db.StringProperty(required=True, choices=set(["published", "draft"]))
 
-
+class Tag(db.Model):
+    """
+    The tags model
+    """
+    pass
+    
 @app.route('/')
 def index():
     entries = db.GqlQuery("SELECT * FROM Entry ORDER BY date DESC LIMIT 10")
@@ -42,27 +38,38 @@ def index():
 
 
 @app.route('/entry/<int:id>')
-def entry():
+def entry(id):
     entry = Entry.get_by_id(id)
+    if not entry:
+        return redirect(url_for('index'))
     return render_template('entry.html', entry=entry)
+
+@app.route('/dashboard/')
+def dashboard():
+    pass
 
 
 @app.route('/add', methods=['POST'])
 def add():
     if not session.get('logged_in'): abort(401)
-    entry = Entry()
-    entry.title   = request.form['title']
-    entry.content = request.form['content']
-    if not entry.title:
+    title   = request.form['title']
+    content = request.form['content']
+    #slug    = request.form['slug']
+    if not title:
         flash("You forget to name a blog!")
         return redirect(url_for('index'))
-    if not entry.content:
+    if not content:
         flash("Bad idea! You leave blank to your blog!")
         return redirect(url_for('index'))
+    entry = Entry(title=title, content=content)
     entry.put()
     return redirect(url_for('index'))
 
 
+@app.route('/entry/<int:id>/delete')
+def delete(id):
+    entry = Entry.get_by_id(id)
+    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None

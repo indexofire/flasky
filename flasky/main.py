@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 from google.appengine.ext.webapp.util import run_wsgi_app
-from blog import view
+from blog import application
 
-run_wsgi_app(view.app)
+run_wsgi_app(application.app)
