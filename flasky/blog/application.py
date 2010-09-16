@@ -20,7 +20,7 @@ class Entry(db.Model):
     The entries db table of blog
     """
     title   = db.StringProperty()
-    content = db.StringProperty(multiline=True)
+    content = db.TextProperty()
     slug    = db.StringProperty()
     date    = db.DateTimeProperty(auto_now_add=True)
     #status  = db.StringProperty(required=True, choices=set(["published", "draft"]))

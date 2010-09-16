@@ -1,21 +1,6 @@
 {% extends "site.html" %}
 
 {% block body %}
-{% if session.logged_in %}
-<form action="{{ url_for('add') }}" method="post" class="add-entry">
-  <dl>
-    <dt>Title:</dt>
-    <dd><input type="text" size="60" name="title"></dd>
-    <!--<dt>Slug:</dt>
-    <dd><input type="text" size="60" name="slug"></dd>-->
-    <dt>Text:</dt>
-    <dd><textarea name="content" rows="20" cols="60"></textarea></dd>
-    <dd><input type="submit" value="Share"></dd>
-
-  </dl>
-</form>
-{% endif %}
-
 <ul class="entries">
 {% for entry in entries %}
   <li>
@@ -27,4 +12,19 @@
   <li><em>Unbelievable. No entries here so far!</em></li>
 {% endfor %}
 </ul>
+
+{% if session.logged_in %}
+<form action="{{ url_for('add') }}" method="post" class="add-entry">
+  <dl>
+    <dt>Title:</dt>
+    <dd><input type="text" size="60" name="title"></dd>
+    <!--<dt>Slug:</dt>
+    <dd><input type="text" size="60" name="slug"></dd>-->
+    <dt>Text:</dt>
+    <dd><textarea name="content" rows="20" cols="60" id="html"></textarea></dd>
+    <dd><input type="submit" value="Share"></dd>
+
+  </dl>
+</form>
+{% endif %}
 {% endblock body %}

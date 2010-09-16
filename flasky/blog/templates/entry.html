@@ -3,9 +3,8 @@
 {% block body %}
 <h2>{{ entry.title }}</h2>
 <div>{{ entry.content|safe }}</div>
-
+<hr/>
 <a href="entry/{{ entry.key().id() }}#disqus_thread">Comments</a>
-
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
