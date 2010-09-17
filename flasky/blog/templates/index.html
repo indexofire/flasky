@@ -5,7 +5,7 @@
 {% for entry in entries %}
   <li>
     <h2><a href="entry/{{ entry.key().id() }}">{{ entry.title }}</a></h2>
-    <p>{{ entry.date }} | <a href="entry/{{ entry.key().id() }}/edit">edit</a> | <a href="entry/{{ entry.key().id() }}/delete">delete</a></p>
+    <p>{{ entry.date }}{% if session.logged_in %} | <a href="edit/{{ entry.key().id() }}">edit</a> | <a href="delete/{{ entry.key().id() }}">delete</a>{% endif %}</p>
     <div>{{ entry.content|safe }}</div>
   </li>
 {% else %}
@@ -17,13 +17,12 @@
 <form action="{{ url_for('add') }}" method="post" class="add-entry">
   <dl>
     <dt>Title:</dt>
-    <dd><input type="text" size="60" name="title"></dd>
-    <!--<dt>Slug:</dt>
-    <dd><input type="text" size="60" name="slug"></dd>-->
+    <dd><input type="text" name="title"></dd>
+    <dt>Slug:</dt>
+    <dd><input type="text" name="slug"></dd>
     <dt>Text:</dt>
     <dd><textarea name="content" rows="20" cols="60" id="html"></textarea></dd>
-    <dd><input type="submit" value="Share"></dd>
-
+    <dd><input type="submit" value="Post" class="post"></dd>
   </dl>
 </form>
 {% endif %}

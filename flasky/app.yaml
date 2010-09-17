@@ -1,5 +1,5 @@
-application: flasky
-version: 1
+application: mark-renton
+version: 2
 runtime: python
 api_version: 1
 
@@ -17,3 +17,4 @@ handlers:
   
 - url: /.*
   script: main.py
+  secure: always

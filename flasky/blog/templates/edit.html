@@ -1,17 +1,17 @@
 {% extends "site.html" %}
 
 {% block body %}
-{% if session.logged_in %}
-<form action="." method="post" class="add-entry">
+
+<form action="/edit/{{ entry.key().id() }}" method="post" class="add-entry">
   <dl>
     <dt>Title:</dt>
     <dd><input type="text" size="60" name="title" value="{{ entry.title }}"></dd>
-    <!--<dt>Slug:</dt>
-    <dd><input type="text" size="60" name="slug"></dd>-->
+    <dt>Slug:</dt>
+    <dd><input type="text" size="60" name="slug" value="{{ entry.slug }}"></dd>
     <dt>Text:</dt>
     <dd><textarea name="content" rows="20" cols="60" id="html">{{ entry.content }}</textarea></dd>
-    <dd><input type="submit" value="Post"></dd>
+    <dd><input type="submit" value="Post" class="post"></dd>
   </dl>
 </form>
-{% endif %}
+
 {% endblock %}

@@ -10,74 +10,16 @@ from flask import session
 from flask import get_flashed_messages
 from blog import app
 from blog.utils import login_required
+from blog.models import Entry
 
 
-app.config.from_object('blog.settings')
-
-
-class Entry(db.Model):
-    """
-    The entries db table of blog
-    """
-    title   = db.StringProperty()
-    content = db.TextProperty()
-    #slug    = db.StringProperty()
-    date    = db.DateTimeProperty(auto_now_add=True)
-    #status  = db.StringProperty(required=True, choices=set(["published", "draft"]))
-
-class Tag(db.Model):
-    """
-    The tags model
-    """
-    pass
-    
 @app.route('/')
 def index():
     entries = db.GqlQuery("SELECT * FROM Entry ORDER BY date DESC LIMIT %s" % app.config['ARTICLE_PERPAGE'])
     return render_template('index.html', entries=entries)
 
 
-@app.route('/entry/<int:id>')
-def entry(id):
-    entry = Entry.get_by_id(id)
-    if not entry:
-        return redirect(url_for('index'))
-    return render_template('entry.html', entry=entry)
-
-
-@app.route('/dashboard/')
-def dashboard():
-    pass
-
-
-@app.route('/entry/add', methods=['POST'])
-def add():
-    if not session.get('logged_in'):
-        abort(401)
-    title   = request.form['title']
-    content = request.form['content']
-    #slug    = request.form['slug']
-    if not title:
-        flash("You forget to name a blog!")
-        return redirect(url_for('index'))
-    if not content:
-        flash("Bad idea! You leave blank to your blog!")
-        return redirect(url_for('index'))
-    entry = Entry(title=title, content=content)
-    entry.put()
-    return redirect(url_for('index'))
-
-
-@app.route('/entry/<int:id>/delete', methods=['GET'])
-def delete(id):
-    if not session.get('logged_in'):
-        abort(401)
-    entry = db.GqlQuery("SELECT * FROM Entry WHERE id = %s" % id)
-    entry.delete()
-    return redirect(url_for('index'))
-
-
-@app.route('/entry/<int:id>/edit', methods=['GET', 'POST'])
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     if not session.get('logged_in'):
         abort(401)
@@ -85,18 +27,58 @@ def edit(id):
     if request.method == 'POST':
         entry.title   = request.form['title']
         entry.content = request.form['content']
+        entry.slug    = request.form['slug']
         entry.put()
         return redirect(url_for('index'))
     else:
         return render_template('edit.html', entry=entry)
-        
-    
 
-@app.route('/entry/<int:id>/delete')
+
+@app.route('/entry/<int:id>')
+def entry(id):
+    error = None
+    entry = Entry.get_by_id(id)
+    if not entry:
+        error = "Can't find the blog entry"
+        return render_template('error.html', error=error)
+    return render_template('entry.html', entry=entry)
+
+
+@app.route('/add', methods=['POST'])
+def add():
+    if not session.get('logged_in'):
+        abort(401)
+    title   = request.form['title']
+    content = request.form['content']
+    slug    = request.form['slug'].strip().lower()
+    if not title:
+        flash("You forget to name a blog!")
+        return redirect(url_for('index'))
+    if not content:
+        flash("Bad idea! You leave blank to your blog!")
+        return redirect(url_for('index'))
+    entry = Entry(title=title, slug=slug, content=content)
+    entry.put()
+    return redirect(url_for('index'))
+
+
+@app.route('/delete/<int:id>')
 def delete(id):
     if not session.get('logged_in'):
         abort(401)
-    return redirect(url_for('index'))
+    entry = Entry.get_by_id(id)
+    if not entry:
+        error = "Can't find the blog entry"
+        return render_template('error.html', error=error)
+    q = db.GqlQuery("SELECT * FROM Entry WHERE title = '%s' " % entry.title)
+    if q:
+        e = q.fetch(1)
+        db.delete(e)
+        flash("You have done deletion!")
+        return redirect(url_for('index'))
+    else:
+        error = "Can't find the blog entry"
+        return render_template('error.html', error=error)
     
 
 @app.route('/login', methods=['GET', 'POST'])

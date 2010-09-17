@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
+
 from google.appengine.ext import db
+from google.appengine.ext import gql
+from google.appengine.ext.db import GqlQuery
 import string
+import logging
 
 
 class Tag(db.Model):
     """
-    Google AppEngine model for store of tags
+    tag code from `taggable-mixin`
+
+    http://code.google.com/p/taggable-mixin/
     """
     #The actual string value of the tag
     tag = db.StringProperty(required=True)
@@ -136,7 +142,7 @@ class Taggable:
     A mixin class that is used for making Google AppEnigne Model classes taggable.
 
     Usage:
-    class Post(db.Model, taggable.Taggable):
+    class Post(db.Model, Taggable):
         body = db.TextProperty(required = True)
         title = db.StringProperty()
         added = db.DateTimeProperty(auto_now_add=True)
@@ -144,7 +150,7 @@ class Taggable:
             
         def __init__(self, parent=None, key_name=None, app=None, **entity_values):
             db.Model.__init__(self, parent, key_name, app, **entity_values)
-            taggable.Taggable.__init__(self)
+            Taggable.__init__(self)
     """
     
     def __init__(self):
@@ -203,3 +209,20 @@ class Taggable:
             if each_tag != self.tags[-1]:
                 to_str += self.tag_separator
         return to_str
+
+
+class Entry(db.Model, Taggable):
+    """
+    The entries db table of blog
+    """
+    title   = db.StringProperty()
+    content = db.TextProperty()
+    slug    = db.StringProperty()
+    date    = db.DateTimeProperty(auto_now_add=True)
+    #status  = db.StringProperty(required=True, choices=set(["published", "draft"]))
+
+    def __init__(self, parent=None, key_name=None, app=None, **entity_values):
+         db.Model.__init__(self, parent, key_name, app, **entity_values)
+         Taggable.__init__(self)
+
+

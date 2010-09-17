@@ -1,7 +1,7 @@
 /* ---------- reset css start -----------*/
 html {
     color:#000;
-    background:#FFF;
+    background:#EEE;
 }
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td {
     margin:0;
@@ -61,8 +61,8 @@ input,button,textarea,select{
 
 /* ----------- html element define -------------*/
 body {
+    margin: 20px;
     font-family: sans-serif;
-    background: #eee;
     line-height: 125%;
 }
 a,h1,h2 {
@@ -114,6 +114,17 @@ ul.entries li h2 a:hover {
     background: #393939;
     color: #E8E8E8;
 }
+.add-entry input {
+    border: 1px solid #333;
+    width: 650px;
+}
+.add-entry input.post {
+    width: 120px;
+    padding: 4px;
+}
+.add-entry textarea {
+    width: 640px;
+}
 .add-entry {
     font-size: 1em;
     border-bottom: 1px solid #CCC;
@@ -131,6 +142,7 @@ ul.entries li h2 a:hover {
 .flash {
     background: #CEE5F5;
     padding: 0.5em;
+    margin: 0.5em;
     border: 1px solid #AACBE2;
 }
 .error {
@@ -140,4 +152,7 @@ ul.entries li h2 a:hover {
 pre {
     font-family: inconsolata, 'Lucida Console', 'Bitstream Vera Sans Mono', monospace;
     font-size: 14px;
+}
+.content {
+    margin: 0.5em;
 }
