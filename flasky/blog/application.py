@@ -9,7 +9,6 @@ from flask import flash
 from flask import session
 from flask import get_flashed_messages
 from blog import app
-from blog.utils import login_required
 from blog.models import Entry
 
 
@@ -17,6 +16,12 @@ from blog.models import Entry
 def index():
     entries = db.GqlQuery("SELECT * FROM Entry ORDER BY date DESC LIMIT %s" % app.config['ARTICLE_PERPAGE'])
     return render_template('index.html', entries=entries)
+
+
+@app.route('/archive')
+def archive():
+    entries = Entry.all()
+    return render_template('archive.html', entries=entries)
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -51,13 +56,17 @@ def add():
     title   = request.form['title']
     content = request.form['content']
     slug    = request.form['slug'].strip().lower()
+    tags    = request.form['tags']
     if not title:
         flash("You forget to name a blog!")
         return redirect(url_for('index'))
     if not content:
         flash("Bad idea! You leave blank to your blog!")
         return redirect(url_for('index'))
-    entry = Entry(title=title, slug=slug, content=content)
+    if not slug:
+        flash(tags)
+        return redirect(url_for('index'))
+    entry = Entry(title=title, slug=slug, content=content, tags=tags)
     entry.put()
     return redirect(url_for('index'))
 
@@ -79,7 +88,13 @@ def delete(id):
     else:
         error = "Can't find the blog entry"
         return render_template('error.html', error=error)
-    
+
+
+@app.route('/dashboard')
+def dashboard():
+    if not session.get('logged_in'):
+        abort(401)
+    return render_template('dashboard.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -92,7 +107,7 @@ def login():
         else:
             session['logged_in'] = True
             flash('You were logged in')
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
     return render_template('login.html', error=error)
 
 

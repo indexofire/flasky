@@ -10,6 +10,8 @@
     <dd><input type="text" size="60" name="slug" value="{{ entry.slug }}"></dd>
     <dt>Text:</dt>
     <dd><textarea name="content" rows="20" cols="60" id="html">{{ entry.content }}</textarea></dd>
+    <dt>Tags:</dt>
+    <dd><input type="text" name="tags" value="{% for each_tag in entry.tags %}{{ each_tag.tag }}{% if not forloop.last %}, {% endif %}{% endfor %}" /></dd>
     <dd><input type="submit" value="Post" class="post"></dd>
   </dl>
 </form>
