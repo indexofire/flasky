@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from google.appengine.ext import db
 from flask import render_template
 from flask import redirect
@@ -11,6 +12,10 @@ from flask import get_flashed_messages
 from blog import app
 from blog.models import Entry
 
+
+@app.template_filter('normal_time')
+def normal_time(s):
+    return datetime.strftime("%Y-%M-%d", s)
 
 @app.route('/')
 def index():

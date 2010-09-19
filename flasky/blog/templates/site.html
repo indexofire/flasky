@@ -21,21 +21,27 @@ $(document).ready(function()	{
 
 <body onload="prettyPrint()">
 <div class="page">
-  <h1><a href="/">Mark Renton's Blog</a></h1>
-  <hr/>
+<div class="inner">
+  <div id="head">
+    <h1 id="title"><a href="/">Mark Renton's Blog</a></h1>
+    <h4 id="menu">
+    {% if session.logged_in %}
+      <a href="/dashboard">add</a>
+    {% endif %}
+      <a href="/archive">archive</a>
+    {% if not session.logged_in %}
+      <a href="{{ url_for('login') }}">login</a>
+    {% else %}
+      <a href="{{ url_for('logout') }}">logout</a>
+    {% endif %}
+    </h4>
+  </div>
+  <div class="b_line"></div>
   {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
+  <div class="flash">{{ message }}</div>
   {% endfor %}
-  <div class="content">
-  {% block body %}{% endblock %}
-  </div>
-  <div class="metanav">
-  {% if not session.logged_in %}
-    <a href="{{ url_for('login') }}">Log in</a>
-  {% else %}
-    <a href="{{ url_for('logout') }}">Log out</a>
-  {% endif %}
-  </div>
+  <div class="content">{% block body %}{% endblock %}</div>
+</div>
 </div>
 </body>
 </html>

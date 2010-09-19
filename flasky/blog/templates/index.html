@@ -4,9 +4,10 @@
 <ul class="entries">
 {% for entry in entries %}
   <li>
-    <h2><a href="entry/{{ entry.key().id() }}">{{ entry.title }}</a></h2>
-    <p>{{ entry.date }}{% if session.logged_in %} | <a href="edit/{{ entry.key().id() }}">edit</a> | <a href="delete/{{ entry.key().id() }}">delete</a>{% endif %}</p>
-    <div>{{ entry.content|safe }}</div>
+    <h2 style="float:left"><a href="entry/{{ entry.key().id() }}" title="published: {{ entry.date }}">{{ entry.title }}</a></h2>
+    {% if session.logged_in %}<h4 class="tool"><a href="edit/{{ entry.key().id() }}">edit</a><a href="delete/{{ entry.key().id() }}">delete</a></h4>{% endif %}
+    <div style="clear:both"></div>
+    <div class="blog">{{ entry.content|safe }}</div>
     {% if entry.tags %}
     <div class="posttags">tags:
       {% for each_tag in entry.tags %}
@@ -15,9 +16,9 @@
     </div>
     {% endif %}
   </li>
+  <div class="break_line"></div>
 {% else %}
   <li><em>Unbelievable. No entries here so far!</em></li>
 {% endfor %}
 </ul>
-<a href="/archive">archive</a>
 {% endblock body %}
