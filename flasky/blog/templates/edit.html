@@ -1,7 +1,17 @@
 {% extends "site.html" %}
 
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='markitup/skins/simple/style.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='markitup/sets/html/style.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='markitup/jquery.markitup.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='markitup/sets/html/set.js') }}"></script>
+{% endblock %}
 {% block body %}
-
+<script language="javascript">
+$(document).ready(function()	{
+   $('#html').markItUp(mySettings);
+});
+</script>
 <form action="/edit/{{ entry.key().id() }}" method="post" class="add-entry">
   <dl>
     <dt>Title:</dt>
@@ -15,5 +25,4 @@
     <dd><input type="submit" value="Post" class="post"></dd>
   </dl>
 </form>
-
 {% endblock %}

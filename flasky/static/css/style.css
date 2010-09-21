@@ -6,7 +6,7 @@ html {
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td {
     margin:0;
     padding:0;
-    margin-bottom: 0.8em;
+    margin-bottom: 1em;
 }
 table {
     border-collapse:collapse;
@@ -105,10 +105,9 @@ h6 {
 }
 #head a,
 .tool a {
-    color: #377BA8;
     padding: 0.2em 0.6em;
     text-decoration: none;
-    font-family: monospace;
+    font-family:  monospace;
 }
 #head a:hover,
 .tool a:hover {
@@ -183,14 +182,13 @@ ul.entries li h2 a:hover {
     padding: 0.5em;
 }
 pre {
-    font-family: inconsolata, 'Lucida Console', 'Bitstream Vera Sans Mono', monospace;
-    font-size: 0.9em;
     background: #FEFEFE;
-    border: 1px dashed #E3E3E3;
+    border: 1px dashed #D3D3D3;
     padding: 10px;
+    line-height:140%;
 }
-.blog pre.prettyprint {
-    border: 1px dashed #E3E3E3;
+pre, code, tt {
+    font: normal normal normal 0.8em/normal 'andale mono', 'lucida console', Monaco, 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, monospace;
 }
 .content {
     margin: 0em;
