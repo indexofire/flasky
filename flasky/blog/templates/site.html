@@ -12,27 +12,35 @@
 
 <body onload="prettyPrint()">
 <div class="page">
-<div class="inner">
-  <div id="head">
-    <h1 id="title"><a href="/">Mark Renton's Blog</a></h1>
-    <h4 id="menu">
-    {% if session.logged_in %}
-      <a href="/dashboard">add</a>
-    {% endif %}
-      <a href="/archive">archive</a>
-    {% if not session.logged_in %}
-      <a href="{{ url_for('login') }}">login</a>
-    {% else %}
-      <a href="{{ url_for('logout') }}">logout</a>
-    {% endif %}
-    </h4>
-  </div>
-  <div class="b_line"></div>
-  {% for message in get_flashed_messages() %}
-  <div class="flash">{{ message }}</div>
-  {% endfor %}
-  <div class="content">{% block body %}{% endblock %}</div>
+  <div class="inner">
+    <div id="head">
+      <h1 id="title"><a href="/">Mark Renton's Blog</a></h1>
+      <h5 id="menu">
+      {% if session.logged_in %}
+        <a href="/dashboard">add</a>
+      {% endif %}
+        <a href="/archive">archive</a>
+      {% if not session.logged_in %}
+        <a href="{{ url_for('login') }}">login</a>
+      {% else %}
+        <a href="{{ url_for('logout') }}">logout</a>
+      {% endif %}
+      </h5>
+    </div>
+    <div class="b_line"></div>
+    
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    
+    <div class="content">{% block body %}{% endblock %}</div>
+    <div class="b_line"></div>
+    <div id="foot">
+      <img src="http://pic.yupoo.com/iweekly/Ar82qEas/MV2Mq.gif" />
+      <img src="/static/img/flask.png" />
+    </div>
 </div>
 </div>
+<a href="https://github.com/indexofire/flasky/" class="forkme" target="_blank"></a>
 </body>
 </html>

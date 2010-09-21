@@ -203,3 +203,21 @@ pre, code, tt {
     border-top: 1px solid #DEDEDE;
     border-bottom: 1px solid #FFF;
 }
+#foot{
+    height: 40px;
+    background: #F0F0F0;
+    margin: 0px;
+    padding: 1em;
+}
+#foot img {
+    
+}
+.forkme{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: url("/static/img/fork_me.png") no-repeat 100% 100%;
+    display: block;
+    height: 140px;
+    width: 140px;
+} 
