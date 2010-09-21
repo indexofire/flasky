@@ -1,14 +1,24 @@
 {% extends "site.html" %}
 
 {% block body %}
-<ul class="entries">
-{% for entry in entries %}
-  <li>
-    <h2><a href="entry/{{ entry.key().id() }}">{{ entry.title }}</a></h2>
-    <p>{{ entry.date }}{% if session.logged_in %} | <a href="edit/{{ entry.key().id() }}">edit</a> | <a href="delete/{{ entry.key().id() }}">delete</a>{% endif %}</p>
-  </li>
+<table class="entry_table">
+  <tr>
+    <th>Blog Title</th>
+    <th>Publish Date</th>
+  </tr>
+  {% for entry in entries %}
+  <tr>
+    <td>
+      <h2><a href="entry/{{ entry.key().id() }}">{{ entry.title }}</a></h2>
+    </td>
+    <td>
+      <p>{{ entry.date|timesince }}{% if session.logged_in %} | <a href="edit/{{ entry.key().id() }}">edit</a> | <a href="delete/{{ entry.key().id() }}">delete</a>{% endif %}</p>
+    </td>
 {% else %}
-  <li><em>Unbelievable. No entries here so far!</em></li>
+  <tr>
+    <td>No articles yet!</td>
+    <td></td>
+  </tr>
 {% endfor %}
-</ul>
+</table>
 {% endblock body %}

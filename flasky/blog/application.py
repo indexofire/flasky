@@ -1,21 +1,53 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from urlparse import urljoin
 from google.appengine.ext import db
-from flask import render_template
-from flask import redirect
-from flask import url_for
-from flask import request
-from flask import abort
-from flask import flash
-from flask import session
-from flask import get_flashed_messages
+from flask import render_template, redirect, url_for, request, abort
+from flask import flash, session, get_flashed_messages
+from werkzeug.contrib.atom import AtomFeed
 from blog import app
 from blog.models import Entry
 
+def make_external(url):
+    return urljoin(request.url_root, url)
 
-@app.template_filter('normal_time')
-def normal_time(s):
-    return datetime.strftime("%Y-%M-%d", s)
+
+@app.route('/recent.atom')
+def recent_feed():
+    feed = AtomFeed('Recent Articles', feed_url=request.url, url=request.url_root)
+    query = Entry.all().order('-date').fetch(20)
+    for q in query:
+        feed.add(
+            q.title,
+            unicode(q.rendered_text),
+            content_type='html',
+            url=make_external(q.url),
+            updated=q.last_update,
+            published=q.published
+        )
+    return feed.get_response()
+
+@app.template_filter()
+def timesince(dt, default="just now"):
+    """
+    Returns string representing "time since" e.g.
+    3 days ago, 5 hours ago etc.
+    """
+    now = datetime.utcnow()
+    diff = now - dt
+    periods = (
+        (diff.days / 365, "year", "years"),
+        (diff.days / 30, "month", "months"),
+        (diff.days / 7, "week", "weeks"),
+        (diff.days, "day", "days"),
+        (diff.seconds / 3600, "hour", "hours"),
+        (diff.seconds / 60, "minute", "minutes"),
+        (diff.seconds, "second", "seconds"),
+    )
+    for period, singular, plural in periods:
+        if period:
+            return "%d %s ago" % (period, singular if period == 1 else plural)
+    return default
 
 @app.route('/')
 def index():
@@ -25,7 +57,7 @@ def index():
 
 @app.route('/archive')
 def archive():
-    entries = Entry.all()
+    entries = Entry.all().order('-date')
     return render_template('archive.html', entries=entries)
 
 

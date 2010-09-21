@@ -210,7 +210,7 @@ pre, code, tt {
     padding: 1em;
 }
 #foot img {
-    
+    border: 1px dashed #CACACA;
 }
 .forkme{
     position: absolute;
@@ -221,3 +221,12 @@ pre, code, tt {
     height: 140px;
     width: 140px;
 } 
+.entry_table {
+    width: 95%;
+    border: 1px solid #ECECEC;
+    margin: 10px;
+}
+.entry_table td,
+.entry_table th {
+    padding: 10px;
+}
