@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Inconsolata&subset=latin);
 /* ---------- reset css start -----------*/
 html {
     color:#000;
@@ -62,11 +63,13 @@ input,button,textarea,select{
 /* ----------- html element define -------------*/
 body {
     margin: 20px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     line-height: 125%;
 }
 a,h1,h2 {
     color: #377BA8;
+    font-family: 'Cuprum';
+    font-weight: bold;
 }
 h1 {
     font-size: 2em;
@@ -87,7 +90,7 @@ h5 {
 h6 {
     font-size: 1.0em;
 }
-.page {
+.page {@import url(http://fonts.googleapis.com/css?family=Inconsolata&subset=latin);
     margin: auto;
     width: 950px;
     border: 1px solid #CCC;
@@ -132,7 +135,7 @@ h6 {
 .b_line {
     border-top: 1px dashed #DCDCDC;
     margin: 0em;
-    padding: 0em;
+    padding@import url(http://fonts.googleapis.com/css?family=Inconsolata&subset=latin);: 0em;
 }
 ul.entries {
     list-style: none;
@@ -188,7 +191,8 @@ pre {
     line-height:140%;
 }
 pre, code, tt {
-    font: normal normal normal 0.8em/normal 'andale mono', 'lucida console', Monaco, 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, monospace;
+    font-family: 'Inconsolata';
+    font-size: 1em;
 }
 .content {
     margin: 0em;

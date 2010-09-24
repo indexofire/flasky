@@ -9,7 +9,7 @@
   {% for entry in entries %}
   <tr>
     <td>
-      <h2><a href="entry/{{ entry.key().id() }}">{{ entry.title }}</a></h2>
+      <h2><a href="entry/{{ entry.slug }}">{{ entry.title }}</a></h2>
     </td>
     <td>
       <p>{{ entry.date|timesince }}{% if session.logged_in %} | <a href="edit/{{ entry.key().id() }}">edit</a> | <a href="delete/{{ entry.key().id() }}">delete</a>{% endif %}</p>

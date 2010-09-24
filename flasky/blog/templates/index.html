@@ -4,7 +4,7 @@
 <ul class="entries">
 {% for entry in entries %}
   <li>
-    <h2 style="float:left"><a href="entry/{{ entry.key().id() }}" title="published: {{ entry.date }}">{{ entry.title }}</a></h2>
+    <h2 style="float:left"><a href="entry/{{ entry.slug }}" title="published: {{ entry.date }}">{{ entry.title }}</a></h2>
     {% if session.logged_in %}<h4 class="tool"><a href="edit/{{ entry.key().id() }}">edit</a><a href="delete/{{ entry.key().id() }}">delete</a></h4>{% endif %}
     <div style="clear:both"></div>
     <div class="blog">{{ entry.content|safe }}</div>

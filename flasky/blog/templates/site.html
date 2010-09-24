@@ -17,15 +17,14 @@
     <div id="head">
       <h1 id="title"><a href="/">Mark Renton's Blog</a></h1>
       <h5 id="menu">
+        <a href="/archive">archive</a>
       {% if session.logged_in %}
         <a href="/dashboard">add</a>
-      {% endif %}
-        <a href="/archive">archive</a>
-      {% if not session.logged_in %}
-        <a href="{{ url_for('login') }}">login</a>
-      {% else %}
         <a href="{{ url_for('logout') }}">logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">login</a>
       {% endif %}
+        <a href="/recent">atom</a>
       </h5>
     </div>
     <div class="b_line"></div>
@@ -38,7 +37,7 @@
     <div class="b_line"></div>
     <div id="foot">
       <img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" alt="Powered by Google App Engine" />
-      <img src="/static/img/flask.png" />
+      <img src="/static/img/flask.png" alt="Based on Flask Framework" />
     </div>
 </div>
 </div>

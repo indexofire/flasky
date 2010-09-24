@@ -8,22 +8,21 @@ from werkzeug.contrib.atom import AtomFeed
 from blog import app
 from blog.models import Entry
 
+
 def make_external(url):
     return urljoin(request.url_root, url)
 
-
-@app.route('/recent.atom')
+@app.route('/recent')
 def recent_feed():
-    feed = AtomFeed('Recent Articles', feed_url=request.url, url=request.url_root)
+    feed = AtomFeed("Mark Renton's Blog", feed_url=request.url, url=request.url_root)
     query = Entry.all().order('-date').fetch(20)
     for q in query:
         feed.add(
             q.title,
-            unicode(q.rendered_text),
+            unicode(q.content),
             content_type='html',
-            url=make_external(q.url),
-            updated=q.last_update,
-            published=q.published
+            url=make_external(q.slug),
+            updated=q.date,
         )
     return feed.get_response()
 
@@ -75,16 +74,14 @@ def edit(id):
     else:
         return render_template('edit.html', entry=entry)
 
-
-@app.route('/entry/<int:id>')
-def entry(id):
+@app.route('/entry/<slug>')
+def entry(slug):
     error = None
-    entry = Entry.get_by_id(id)
+    entry = Entry.gql("WHERE slug = :1 ", slug)
     if not entry:
         error = "Can't find the blog entry"
         return render_template('error.html', error=error)
-    return render_template('entry.html', entry=entry)
-
+    return render_template('entry.html', entry=entry[0])
 
 @app.route('/add', methods=['POST'])
 def add():
