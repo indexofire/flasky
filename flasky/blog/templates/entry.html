@@ -7,12 +7,7 @@
 <div class="posttags">
 <span>tags:</span>
 {% for each_tag in entry.tags %}
-  <a href="/searchbytag?tag={{ each_tag.tag|escape }}">{{ each_tag.tag }}</a>
-{% if forloop.last %}
- 
-{% else %}
-,
-{% endif %}
+  <a href="/tags/{{ each_tag.tag|escape }}">{{ each_tag.tag }}</a>
 {% endfor %}
 </div>
 

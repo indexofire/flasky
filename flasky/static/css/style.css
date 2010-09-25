@@ -213,7 +213,7 @@ pre, code, tt {
     margin: 0px;
     padding: 1em;
 }
-#foot img {
+#foot .dashed {
     border: 1px dashed #CACACA;
 }
 .forkme{

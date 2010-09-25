@@ -2,8 +2,8 @@
 from datetime import datetime
 from urlparse import urljoin
 from google.appengine.ext import db
-from flask import render_template, redirect, url_for, request, abort
-from flask import flash, session, get_flashed_messages
+from flask import render_template, redirect, url_for, request, abort, flash, \
+    session, get_flashed_messages
 from werkzeug.contrib.atom import AtomFeed
 from blog import app
 from blog.models import Entry
@@ -64,14 +64,13 @@ def archive():
 def edit(slug):
     if not session.get('logged_in'):
         abort(401)
-    qs = Entry.gql("WHERE slug = :1", slug)
-    entry = qs.get()
-    #entry = qs.fetch(0)
+    entry = Entry.gql("WHERE slug = :1", slug).get()
     if request.method == 'POST':
         entry.title   = request.form['title']
         entry.content = request.form['content']
         entry.slug    = request.form['slug']
-        entry.put()
+        db.put(entry)
+        entry.tags = request.form['tags']
         return redirect(url_for('index'))
     else:
         return render_template('edit.html', entry=entry)
@@ -89,10 +88,9 @@ def entry(slug):
 def add():
     if not session.get('logged_in'):
         abort(401)
-    obj = Entry.get(key)
-    entry = Entry(title=request.form['title'], slug=request.form['slug'].strip().lower())
-    entry.content = request.form['content']
-    #entry.tags    = request.form['tags']
+    entry = Entry(title=request.form['title'],
+                  slug=request.form['slug'].strip().lower(),
+                  content = request.form['content'])
     if entry.title is None:
         flash("You forget to name a blog!")
         return redirect(url_for('index'))
@@ -100,11 +98,11 @@ def add():
         flash("Bad idea! You leave blank to your blog!")
         return redirect(url_for('index'))
     if not entry.slug:
-        flash(tags)
+        flash("No slug define!")
         return redirect(url_for('index'))
-    entry.put()
+    db.put(entry)
+    entry.tags    = request.form['tags']
     return redirect(url_for('index'))
-
 
 @app.route('/entry/<slug>/del')
 def delete(slug):
@@ -118,7 +116,6 @@ def delete(slug):
     db.delete(entry)
     flash("You have done deletion!")
     return redirect(url_for('index'))
-
 
 @app.route('/dashboard')
 def dashboard():
@@ -146,6 +143,10 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('index'))
+
+@app.route('/tags/<tag>')
+def tag(tag):
+    pass
 
 
 if __name__ == '__main__':
