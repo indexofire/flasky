@@ -12,7 +12,7 @@ $(document).ready(function()	{
    $('#html').markItUp(mySettings);
 });
 </script>
-<form action="/edit/{{ entry.key().id() }}" method="post" class="add-entry">
+<form action="/entry/{{ entry.slug }}/edit" method="post" class="add-entry">
   <dl>
     <dt>Title:</dt>
     <dd><input type="text" size="60" name="title" value="{{ entry.title }}"></dd>
@@ -21,8 +21,9 @@ $(document).ready(function()	{
     <dt>Text:</dt>
     <dd><textarea name="content" rows="20" cols="60" id="html">{{ entry.content }}</textarea></dd>
     <dt>Tags:</dt>
-    <dd><input type="text" name="tags" value="{% for each_tag in entry.tags %}{{ each_tag.tag }}{% if not forloop.last %}, {% endif %}{% endfor %}" /></dd>
+    <dd><input type="text" name="tags" value="{% if entry %}{{ entry.tags_string }}{% endif %}" /></dd>
     <dd><input type="submit" value="Post" class="post"></dd>
   </dl>
 </form>
 {% endblock %}
+

@@ -72,7 +72,7 @@ class Tag(db.Model):
         if existing_tag is None:
             # The tag does not yet exist, so create it.
             def create_tag_txn():
-                new_tag = Tag(key_name=tag_key_name, tag = tag_name)
+                new_tag = Tag(key_name=tag_key_name, tag=tag_name)
                 new_tag.put()
                 return new_tag
             existing_tag = db.run_in_transaction(create_tag_txn)

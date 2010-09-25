@@ -60,11 +60,13 @@ def archive():
     return render_template('archive.html', entries=entries)
 
 
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
-def edit(id):
+@app.route('/entry/<slug>/edit', methods=['GET', 'POST'])
+def edit(slug):
     if not session.get('logged_in'):
         abort(401)
-    entry = Entry.get_by_id(id)
+    qs = Entry.gql("WHERE slug = :1", slug)
+    entry = qs.get()
+    #entry = qs.fetch(0)
     if request.method == 'POST':
         entry.title   = request.form['title']
         entry.content = request.form['content']
@@ -77,8 +79,8 @@ def edit(id):
 @app.route('/entry/<slug>')
 def entry(slug):
     error = None
-    entry = Entry.gql("WHERE slug = :1 ", slug)
-    if not entry:
+    entry = Entry.gql("WHERE slug = :1", slug)
+    if entry is None:
         error = "Can't find the blog entry"
         return render_template('error.html', error=error)
     return render_template('entry.html', entry=entry[0])
@@ -87,41 +89,35 @@ def entry(slug):
 def add():
     if not session.get('logged_in'):
         abort(401)
-    title   = request.form['title']
-    content = request.form['content']
-    slug    = request.form['slug'].strip().lower()
-    tags    = request.form['tags']
-    if not title:
+    obj = Entry.get(key)
+    entry = Entry(title=request.form['title'], slug=request.form['slug'].strip().lower())
+    entry.content = request.form['content']
+    #entry.tags    = request.form['tags']
+    if entry.title is None:
         flash("You forget to name a blog!")
         return redirect(url_for('index'))
-    if not content:
+    if entry.content is None:
         flash("Bad idea! You leave blank to your blog!")
         return redirect(url_for('index'))
-    if not slug:
+    if not entry.slug:
         flash(tags)
         return redirect(url_for('index'))
-    entry = Entry(title=title, slug=slug, content=content, tags=tags)
     entry.put()
     return redirect(url_for('index'))
 
 
-@app.route('/delete/<int:id>')
-def delete(id):
+@app.route('/entry/<slug>/del')
+def delete(slug):
     if not session.get('logged_in'):
         abort(401)
-    entry = Entry.get_by_id(id)
-    if not entry:
+    qs = Entry.gql("WHERE slug = :1", slug)
+    entry = qs.get()
+    if entry is None:
         error = "Can't find the blog entry"
         return render_template('error.html', error=error)
-    q = db.GqlQuery("SELECT * FROM Entry WHERE title = '%s' " % entry.title)
-    if q:
-        e = q.fetch(1)
-        db.delete(e)
-        flash("You have done deletion!")
-        return redirect(url_for('index'))
-    else:
-        error = "Can't find the blog entry"
-        return render_template('error.html', error=error)
+    db.delete(entry)
+    flash("You have done deletion!")
+    return redirect(url_for('index'))
 
 
 @app.route('/dashboard')
