@@ -6,7 +6,7 @@ from flask import render_template, redirect, url_for, request, abort, flash, \
     session, get_flashed_messages
 from werkzeug.contrib.atom import AtomFeed
 from blog import app
-from blog.models import Entry
+from blog.models import Entry, Tag, Taggable
 
 
 def make_external(url):
@@ -21,7 +21,7 @@ def recent_feed():
             q.title,
             unicode(q.content),
             content_type='html',
-            url=make_external(q.slug),
+            url=make_external('entry/' + q.slug),
             updated=q.date,
         )
     return feed.get_response()
@@ -146,7 +146,9 @@ def logout():
 
 @app.route('/tags/<tag>')
 def tag(tag):
-    pass
+    e = Tag.get_by_name(tag)
+    qs = Entry.get(e.tagged)
+    return render_template('archive.html', entries=qs)
 
 
 if __name__ == '__main__':

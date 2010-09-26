@@ -68,13 +68,11 @@ body {
 }
 a,h1,h2 {
     color: #377BA8;
-    font-family: 'Cuprum';
     font-weight: bold;
 }
 h1 {
     font-size: 2em;
 }
-
 h2 {
     font-size: 1.8em;
 }
@@ -90,52 +88,55 @@ h5 {
 h6 {
     font-size: 1.0em;
 }
-.page {@import url(http://fonts.googleapis.com/css?family=Inconsolata&subset=latin);
+.page {
     margin: auto;
     width: 950px;
     border: 1px solid #CCC;
-    background: #F8F8F8;
-}
-.inner {
-    border: 1px solid #FFF;
-    margin: 0px;
+    background: #FFF;
+    padding: 1px;
 }
 #head {
     margin: 0em;
-    padding: 1em;
-    background: #F0F0F0;
-    height: 1.8em;
+    padding: 1.5em 1.5em 1.3em 1.5em;
+    background: #EEE;
+    border-bottom: 1px dashed #CCC;
 }
-#head a,
-.tool a {
-    padding: 0.2em 0.6em;
+#head a {
+    color: #333537;
+    padding: 0.3em 0.6em 0.2em 0.6em;
+    margin-left: -0.4em;
     text-decoration: none;
     font-family:  monospace;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #FFF;
 }
-#head a:hover,
-.tool a:hover {
+#head a:hover {
     background: #494949;
     color: #F3F3F3;
     border-radius: 2px;
     -moz-border-radius: 2px;
+    text-shadow: 1px 1px 1px #111;
 }
 #title {
-    margin: 0em;
-    padding: 0em;
-    float: left;
+    font-size: 2.4em;
 }
 #menu {
-    margin-top: 0.5em;
-    padding-right: 1em;
+    margin: 0em;
+    padding: 0.8em 1.2em;
     float: right;
 }
 #menu a {
-    margin: 0em 0.2em;
+    margin: 0.3em;
+    padding: 0.2em 0.4em;
+    text-decoration: none;
+    font-size: 1.2em;
 }
-.b_line {
-    border-top: 1px dashed #DCDCDC;
-    margin: 0em;
-    padding@import url(http://fonts.googleapis.com/css?family=Inconsolata&subset=latin);: 0em;
+#menu a:hover{
+    background: #494949;
+    color: #F3F3F3;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    text-shadow: 1px 1px 1px #111;
 }
 ul.entries {
     list-style: none;
@@ -151,6 +152,9 @@ ul.entries li h2 a {
 ul.entries li h2 a:hover {
     background: #393939;
     color: #E8E8E8;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    text-shadow: 1px 1px 1px #111;
 }
 .add-entry input {
     border: 1px solid #333;
@@ -174,9 +178,14 @@ ul.entries li h2 a:hover {
     margin-bottom: 1em;
     background: #FAFAFA;
 }
+.meta {
+    background: #F8F8F8;
+    margin: 0em;
+    padding: 0.5em;
+}
 .flash {
     background: #CEE5F5;
-    padding: 0.5em;
+    padding: 1em;
     margin: 0.5em;
     border: 1px solid #AACBE2;
 }
@@ -196,25 +205,38 @@ pre, code, tt {
 }
 .content {
     margin: 0em;
-    padding: 0.9em;
+    padding: 1em;
     background: #F8F8F8;
 }
 .tool {
     float: right;
+    margin-right: 0.8em;
+}
+.tool a {
+    margin: 0.2em;
+    padding: 0.2em 0.4em;
+    font-family: monospace;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+.tool a:hover {
+    background: #393939;
+    color: #E8E8E8;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    text-shadow: 1px 1px 1px #111;
 }
 .break_line {
     margin: 2em 1.2em;
     border-top: 1px solid #DEDEDE;
     border-bottom: 1px solid #FFF;
 }
-#foot{
+#foot {
     height: 40px;
-    background: #F0F0F0;
-    margin: 0px;
-    padding: 1em;
-}
-#foot .dashed {
-    border: 1px dashed #CACACA;
+    background: #EEE;
+    margin: 0em;
+    padding: 1em 2em;
+    border-top: 1px dashed #CCC;
 }
 .forkme{
     position: absolute;
@@ -232,5 +254,19 @@ pre, code, tt {
 }
 .entry_table td,
 .entry_table th {
-    padding: 10px;
+    padding: 0.8em;
+}
+.posttags a {
+    margin: 0em;
+    padding: 0.3em;
+    font-size: 1.2em;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+.posttags a:hover {
+    background: #393939;
+    color: #E8E8E8;
+}
+.entry_title {
+    float: left;
 }

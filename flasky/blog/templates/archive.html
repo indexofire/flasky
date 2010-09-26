@@ -9,10 +9,10 @@
   {% for entry in entries %}
   <tr>
     <td>
-      <h2><a href="entry/{{ entry.slug }}">{{ entry.title }}</a></h2>
+      <p><a href="entry/{{ entry.slug }}">{{ entry.title }}</a></p>
     </td>
     <td>
-      <p>{{ entry.date|timesince }}{% if session.logged_in %} | <a href="edit/{{ entry.key().id() }}">edit</a> | <a href="delete/{{ entry.key().id() }}">delete</a>{% endif %}</p>
+      <p>{{ entry.date|timesince }}{% if session.logged_in %} | <a href="/entry/{{ entry.slug }}/edit">edit</a> | <a href="/entry/{{ entry.slug }}/del">delete</a>{% endif %}</p>
     </td>
 {% else %}
   <tr>

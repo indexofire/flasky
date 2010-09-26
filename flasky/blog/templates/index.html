@@ -4,8 +4,10 @@
 <ul class="entries">
 {% for entry in entries %}
   <li>
-    <h2 style="float:left"><a href="entry/{{ entry.slug }}" title="published: {{ entry.date }}">{{ entry.title }}</a></h2>
-    {% if session.logged_in %}<h4 class="tool"><a href="/entry/{{ entry.slug }}/edit">edit</a><a href="/entry/{{ entry.slug }}/del">delete</a></h4>{% endif %}
+    <h2 class="entry_title"><a href="entry/{{ entry.slug }}" title="published: {{ entry.date }}">{{ entry.title }}</a></h2>
+    {% if session.logged_in %}
+    <p class="tool"><a href="/entry/{{ entry.slug }}/edit">edit</a><a href="/entry/{{ entry.slug }}/del">delete</a></p>
+    {% endif %}
     <div style="clear:both"></div>
     <div class="blog">{{ entry.content|safe }}</div>
     {% if entry.tags %}
