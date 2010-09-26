@@ -33,16 +33,23 @@
         <div class="flash">{{ message }}</div>
     </div>
     {% endfor %}
-    
+
     <div class="content">{% block body %}{% endblock %}</div>
     
     <div id="foot">
+        <div class="tag_cloud">Tags: 
+        {% for tag in tags %}
+            <font size="{{ tag.tagged_count|tag_size }}"><a href="/tags/{{ tag.tag }}">{{ tag.tag }}</a></font>
+        {% endfor %}
+        </div>
+        <div style="margin:1em 0em 0em 0em">
         <a href="http://code.google.com/appengine/" target="_blank">
             <img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" alt="Powered by Google App Engine" title="Powered by Google App Engine" />
         </a>
         <a href="http://flask.pocoo.org/">
             <img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" alt="made with Flask" title="made with Flask" height="32" width="122" />
         </a>
+        </div>
     </div>
 
 </div>

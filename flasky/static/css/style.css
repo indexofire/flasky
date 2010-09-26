@@ -232,7 +232,6 @@ pre, code, tt {
     border-bottom: 1px solid #FFF;
 }
 #foot {
-    height: 40px;
     background: #EEE;
     margin: 0em;
     padding: 1em 2em;
@@ -269,4 +268,31 @@ pre, code, tt {
 }
 .entry_title {
     float: left;
+}
+.entry {
+    padding: 1em;
+}
+.left {
+    width: 480px;
+    float: left;
+}
+.right {
+    width: 320px;
+    float: left;
+}
+.tag_cloud {
+    padding: 0em;
+    margin: 0em;
+}
+.tag_cloud a {
+    margin: 4px;
+    padding: 4px;
+    text-decoration: none;
+    color: #3C3C3C;
+    text-shadow: 1px 1px 1px #FFF;
+}
+.tag_cloud a:hover {
+    background: #393939;
+    color: #E8E8E8;
+    text-shadow: 1px 1px 1px #111;
 }

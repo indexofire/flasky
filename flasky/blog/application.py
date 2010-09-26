@@ -12,20 +12,6 @@ from blog.models import Entry, Tag, Taggable
 def make_external(url):
     return urljoin(request.url_root, url)
 
-@app.route('/recent')
-def recent_feed():
-    feed = AtomFeed("Mark Renton's Blog", feed_url=request.url, url=request.url_root)
-    query = Entry.all().order('-date').fetch(20)
-    for q in query:
-        feed.add(
-            q.title,
-            unicode(q.content),
-            content_type='html',
-            url=make_external('entry/' + q.slug),
-            updated=q.date,
-        )
-    return feed.get_response()
-
 @app.template_filter()
 def timesince(dt, default="just now"):
     """
@@ -48,10 +34,44 @@ def timesince(dt, default="just now"):
             return "%d %s ago" % (period, singular if period == 1 else plural)
     return default
 
+@app.template_filter()
+def tag_size(value):
+    from google.appengine.api import memcache
+    tags = memcache.get('popular_tags')
+    if tags is None:
+        tags = Tag.get_tags_by_frequency(200)
+        memcache.add('popular_tags', tags, 60*60*4)
+    tag_num = []
+    for tag in tags:
+        tag_num.append(tag.tagged_count)
+    t_min = min(tag_num)
+    t_max = max(tag_num)
+    
+    if t_max == t_min:
+        t_max = t_max + 1
+    
+    factor = 5.0/float(t_max - t_min)
+    return 6 - (t_max - value)*factor
+    
+@app.route('/recent')
+def recent_feed():
+    feed = AtomFeed("Mark Renton's Blog", feed_url=request.url, url=request.url_root)
+    query = Entry.all().order('-date').fetch(20)
+    for q in query:
+        feed.add(
+            q.title,
+            unicode(q.content),
+            content_type='html',
+            url=make_external('entry/' + q.slug),
+            updated=q.date,
+        )
+    return feed.get_response()
+
 @app.route('/')
 def index():
     entries = db.GqlQuery("SELECT * FROM Entry ORDER BY date DESC LIMIT %s" % app.config['ARTICLE_PERPAGE'])
-    return render_template('index.html', entries=entries)
+    tags = Tag.popular_tags()
+    return render_template('index.html', entries=entries, tags=tags)
 
 
 @app.route('/archive')

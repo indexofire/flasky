@@ -1,40 +1,53 @@
 {% extends "site.html" %}
 
 {% block body %}
-<h2>{{ entry.title }}</h2>
-<div>{{ entry.content|safe }}</div>
+<div class="entry">
+    <h2 class="entry_title">{{ entry.title }}</h2>
+    {% if session.logged_in %}
+    <p class="tool">
+        <a href="/entry/{{ entry.slug }}/edit">edit</a> | 
+        <a href="/entry/{{ entry.slug }}/del">delete</a>
+    </p>
+    {% endif %}
+    <div style="clear:both"></div>
+    <div>{{ entry.content|safe }}</div>
+    
+    {% if entry.update != entry.date %}
+    <span>Last Modified: {{ entry.update }}</span>
+    {% endif %}
+    <div class="posttags">
+        <span>tags:</span>
+        {% for each_tag in entry.tags %}
+        <a href="/tags/{{ each_tag.tag|escape }}">{{ each_tag.tag }}</a>
+        {% endfor %}
+    </div>
 
-<div class="posttags">
-<span>tags:</span>
-{% for each_tag in entry.tags %}
-  <a href="/tags/{{ each_tag.tag|escape }}">{{ each_tag.tag }}</a>
-{% endfor %}
-</div>
+    <hr/>
+    <a href="entry/{{ entry.slug }}#disqus_thread">Comments</a>
 
-<hr/>
-<a href="entry/{{ entry.slug }}#disqus_thread">Comments</a>
+    <div id="disqus_thread"></div>
 
-<div id="disqus_thread"></div>
 <script type="text/javascript">
-  /**
-    * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
-    */
-  (function() {
-   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-   dsq.src = 'http://mark-renton-blog.disqus.com/embed.js';
-   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
+/**
+ * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+ */
+(function() {
+    var dsq = document.createElement('script'); 
+    dsq.type = 'text/javascript'; 
+    dsq.async = true;
+    dsq.src = 'http://mark-renton-blog.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=mark-renton-blog">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-
+    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
 <script type="text/javascript">
 var disqus_shortname = 'mark-renton-blog';
 (function () {
-  var s = document.createElement('script'); s.async = true;
-  s.src = 'http://disqus.com/forums/mark-renton-blog/count.js';
-  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'http://disqus.com/forums/mark-renton-blog/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
 }());
 </script>
-
 {% endblock %}
