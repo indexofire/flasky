@@ -1,8 +1,10 @@
 {% extends "site.html" %}
 
-{% block body %}
+{% block title %}{{ entry.title }}{% endblock %}
+
+{% block insert %}
 <div class="entry">
-    <h2 class="entry_title">{{ entry.title }}</h2>
+    <h3 class="entry_title">{{ entry.title }}</h3>
     {% if session.logged_in %}
     <p class="tool">
         <a href="/entry/{{ entry.slug }}/edit">edit</a> | 
@@ -28,9 +30,6 @@
     <div id="disqus_thread"></div>
 
 <script type="text/javascript">
-/**
- * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
- */
 (function() {
     var dsq = document.createElement('script'); 
     dsq.type = 'text/javascript'; 

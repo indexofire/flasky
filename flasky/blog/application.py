@@ -71,7 +71,7 @@ def recent_feed():
 def index():
     entries = db.GqlQuery("SELECT * FROM Entry ORDER BY date DESC LIMIT %s" % app.config['ARTICLE_PERPAGE'])
     tags = Tag.popular_tags()
-    return render_template('index.html', entries=entries, tags=tags)
+    return render_template('site.html', entries=entries, tags=tags)
 
 
 @app.route('/archive')
@@ -128,8 +128,7 @@ def add():
 def delete(slug):
     if not session.get('logged_in'):
         abort(401)
-    qs = Entry.gql("WHERE slug = :1", slug)
-    entry = qs.get()
+    entry = Entry.gql("WHERE slug = :1", slug).get()
     if entry is None:
         error = "Can't find the blog entry"
         return render_template('error.html', error=error)

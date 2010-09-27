@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>Flasky</title>
+  <title>{% block title %}Flasky{% endblock %}</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prettify.css') }}" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -13,50 +13,59 @@
 
 <body onload="prettyPrint()">
 
-<div class="page">
-    <div id="head">
-        <a id="title" href="/">Mark Renton's Blog</a>
-        <div id="menu">
-            <a href="/archive">archive</a>
-            {% if session.logged_in %}
-            <a href="/dashboard">add</a>
-            <a href="{{ url_for('logout') }}">logout</a>
-            {% else %}
-            <a href="{{ url_for('login') }}">login</a>
-            {% endif %}
-            <a href="http://feeds.feedburner.com/MarkRentonsBlog">feed</a>
+<div class="container clear">
+    <div class="page">
+        <div id="head">
+            <a class="title" href="/">Mark Renton's Blog</a>
+            <div class="menu">
+                <a href="/">home</a>
+                <a href="/archive">archive</a>
+                {% if session.logged_in %}
+                <a href="/dashboard">add</a>
+                <a href="{{ url_for('logout') }}">logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}">login</a>
+                {% endif %}
+                <a href="http://feeds.feedburner.com/MarkRentonsBlog">feed</a>
+            </div>
         </div>
-    </div>
 
-    {% for message in get_flashed_messages() %}
-    <div class="meta">
+
+
+
+        <div id="main">
+        
+        {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
-    </div>
-    {% endfor %}
-
-    <div class="content">{% block body %}{% endblock %}</div>
-    
-    <div id="foot">
-    <table width="100%">
-        <tr>
-            <td width="50%">
-        <div class="tag_cloud"><span>Tags:</span>
-        {% for tag in tags %}
-            <font size="{{ tag.tagged_count|tag_size }}"><a href="/tags/{{ tag.tag }}">{{ tag.tag }}</a></font>
         {% endfor %}
+        
+        {% block body %}
+            <table>
+                <tr>
+                    <td class="left">
+                        <div class="content">{% block insert %}{% include "index.html" %}{% endblock %}</div>
+                    </td>
+                    <td class="right">
+                        <div class="tag_cloud">
+                            <div class="title">Tags:</div>
+                            <div>
+                            {% for tag in tags %}
+                                <font size="{{ tag.tagged_count|tag_size }}"><a href="/tags/{{ tag.tag }}">{{ tag.tag }}</a></font>
+                            {% endfor %}
+                            </div>
+                        </div>
+                        <div id="recentcomments" class="dsq-widget">
+                            <div class="title">Recent Comments:</div>
+                            <script type="text/javascript" src="http://disqus.com/forums/mark-renton-blog/recent_comments_widget.js?num_items=10&hide_avatars=0&avatar_size=48&excerpt_length=200"></script>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        {% endblock %}
         </div>
-            </td>
-            <td width="50%">
-        <div id="recentcomments" class="dsq-widget">
-            <span class="dsq-widget-title">Recent Comments:</span>
-            <script type="text/javascript" src="http://disqus.com/forums/mark-renton-blog/recent_comments_widget.js?num_items=10&hide_avatars=0&avatar_size=32&excerpt_length=200"></script>
-        </div>
-            </td>
+    
+        <div id="foot"></div>
     </div>
-
 </div>
-
-<a href="https://github.com/indexofire/flasky/" class="forkme" target="_blank"></a>
-
 </body>
 </html>
