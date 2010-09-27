@@ -69,6 +69,10 @@ body {
 a,h1,h2 {
     color: #377BA8;
     font-weight: bold;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
 h1 {
     font-size: 2em;
@@ -105,7 +109,6 @@ h6 {
     color: #333537;
     padding: 0.3em 0.6em 0.2em 0.6em;
     margin-left: -0.4em;
-    text-decoration: none;
     font-family:  monospace;
     font-weight: bold;
     text-shadow: 1px 1px 1px #FFF;
@@ -116,6 +119,7 @@ h6 {
     border-radius: 2px;
     -moz-border-radius: 2px;
     text-shadow: 1px 1px 1px #111;
+    text-decoration: none;
 }
 #title {
     font-size: 2.4em;
@@ -128,7 +132,6 @@ h6 {
 #menu a {
     margin: 0.3em;
     padding: 0.2em 0.4em;
-    text-decoration: none;
     font-size: 1.2em;
 }
 #menu a:hover{
@@ -137,6 +140,7 @@ h6 {
     border-radius: 2px;
     -moz-border-radius: 2px;
     text-shadow: 1px 1px 1px #111;
+    text-decoration: none;
 }
 ul.entries {
     list-style: none;
@@ -147,7 +151,6 @@ ul.entries li {
 ul.entries li h2 a {
     padding: 0.3em 0.5em;
     margin-left: -0.5em;
-    text-decoration: none;
 }
 ul.entries li h2 a:hover {
     background: #393939;
@@ -155,6 +158,7 @@ ul.entries li h2 a:hover {
     border-radius: 4px;
     -moz-border-radius: 4px;
     text-shadow: 1px 1px 1px #111;
+    text-decoration: none;
 }
 .add-entry input {
     border: 1px solid #333;
@@ -217,7 +221,6 @@ pre, code, tt {
     padding: 0.2em 0.4em;
     font-family: monospace;
     font-size: 1.2em;
-    text-decoration: none;
 }
 .tool a:hover {
     background: #393939;
@@ -225,6 +228,7 @@ pre, code, tt {
     border-radius: 2px;
     -moz-border-radius: 2px;
     text-shadow: 1px 1px 1px #111;
+    text-decoration: none;
 }
 .break_line {
     margin: 2em 1.2em;
@@ -257,28 +261,19 @@ pre, code, tt {
 }
 .posttags a {
     margin: 0em;
-    padding: 0.3em;
-    font-size: 1.2em;
-    text-decoration: none;
+    padding: 0.3em;    
     font-size: 0.9em;
 }
 .posttags a:hover {
     background: #393939;
     color: #E8E8E8;
+    text-decoration: none;
 }
 .entry_title {
     float: left;
 }
 .entry {
     padding: 1em;
-}
-.left {
-    width: 480px;
-    float: left;
-}
-.right {
-    width: 320px;
-    float: left;
 }
 .tag_cloud {
     padding: 0em;
@@ -287,7 +282,6 @@ pre, code, tt {
 .tag_cloud a {
     margin: 4px;
     padding: 4px;
-    text-decoration: none;
     color: #3C3C3C;
     text-shadow: 1px 1px 1px #FFF;
 }
@@ -295,4 +289,5 @@ pre, code, tt {
     background: #393939;
     color: #E8E8E8;
     text-shadow: 1px 1px 1px #111;
+    text-decoration: none;
 }

@@ -37,19 +37,21 @@
     <div class="content">{% block body %}{% endblock %}</div>
     
     <div id="foot">
-        <div class="tag_cloud">Tags: 
+    <table width="100%">
+        <tr>
+            <td width="50%">
+        <div class="tag_cloud"><span>Tags:</span>
         {% for tag in tags %}
             <font size="{{ tag.tagged_count|tag_size }}"><a href="/tags/{{ tag.tag }}">{{ tag.tag }}</a></font>
         {% endfor %}
         </div>
-        <div style="margin:1em 0em 0em 0em">
-        <a href="http://code.google.com/appengine/" target="_blank">
-            <img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" alt="Powered by Google App Engine" title="Powered by Google App Engine" />
-        </a>
-        <a href="http://flask.pocoo.org/">
-            <img src="http://flask.pocoo.org/static/badges/made-with-flask-s.png" alt="made with Flask" title="made with Flask" height="32" width="122" />
-        </a>
+            </td>
+            <td width="50%">
+        <div id="recentcomments" class="dsq-widget">
+            <span class="dsq-widget-title">Recent Comments:</span>
+            <script type="text/javascript" src="http://disqus.com/forums/mark-renton-blog/recent_comments_widget.js?num_items=10&hide_avatars=0&avatar_size=32&excerpt_length=200"></script>
         </div>
+            </td>
     </div>
 
 </div>
