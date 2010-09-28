@@ -1,0 +1,22 @@
+{% extends "dashboard.html" %}
+
+{% block dashboard_menu %}
+<li><a href="{{ url_for('dashboard') }}">Entries List</a></li>
+<li><a href="{{ url_for('dashboard') }}/add" class="dashboard_active">Add Entries</a></li>
+{% endblock %}
+
+{% block dashboard %}
+<form action="{{ url_for('add') }}" method="post" class="add-entry">
+  <dl>
+    <dt>Title:</dt>
+    <dd><input type="text" name="title" /></dd>
+    <dt>Slug:</dt>
+    <dd><input type="text" name="slug" /></dd>
+    <dt>Text:</dt>
+    <dd><textarea name="content" rows="20" cols="60" id="html"></textarea></dd>
+    <dt>Tags:</dt>
+    <dd><input type="text" name="tags" /></dd>
+    <dd><input type="submit" value="Post" class="post" /></dd>
+  </dl>
+</form>
+{% endblock %}

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import types
 import string
 from google.appengine.ext import db
 
@@ -7,16 +8,17 @@ class Tag(db.Model):
     """
     Tag Model
     """
-    #The actual string value of the tag
+    # The actual string value of the tag
     tag = db.StringProperty(required=True)
     
-    #The date and time that the tag was first added to the datastore
+    # The date and time that the tag was first added to the datastore
     added = db.DateTimeProperty(auto_now_add=True)
 
-    #A List of db.Key values for the datastore objects that have been tagged with this tag value
+    # A List of db.Key values for the datastore objects that have been tagged
+    # with this tag value
     tagged = db.ListProperty(db.Key)
     
-    #The number of entities in tagged
+    # The number of entities in tagged
     tagged_count = db.IntegerProperty(default=0)
     
     @staticmethod
@@ -55,13 +57,13 @@ class Tag(db.Model):
     
     @classmethod
     def get_tags_for_key(cls, key):
-        "Set the tags for the datastore object represented by key."
+        """Set the tags for the datastore object represented by key."""
         tags = db.Query(Tag).filter('tagged =', key).fetch(1000)
         return tags
     
     @classmethod
     def get_or_create(cls, tag_name):
-        "Get the Tag object that has the tag value given by tag_value."
+        """Get the Tag object that has the tag value given by tag_value."""
         tag_key_name = Tag.__key_name(tag_name)
         existing_tag = Tag.get_by_key_name(tag_key_name)
         if existing_tag is None:
@@ -75,19 +77,24 @@ class Tag(db.Model):
     
     @classmethod
     def get_tags_by_frequency(cls, limit=1000):
-        """Return a list of Tags sorted by the number of objects to which they have been applied,
-        most frequently-used first.  If limit is given, return only that many tags; otherwise,
-        return all."""
+        """
+        Return a list of Tags sorted by the number of objects to which they
+        have been applied, most frequently-used first.
+
+        If limit is given, return only that many tags; otherwise, return all.
+        """
         tag_list = db.Query(Tag).filter('tagged_count >', 0).order("-tagged_count").fetch(limit)
             
         return tag_list
 
     @classmethod
     def get_tags_by_name(cls, limit=1000, ascending=True):
-        """Return a list of Tags sorted alphabetically by the name of the tag.
+        """
+        Return a list of Tags sorted alphabetically by the name of the tag.
+        
         If a limit is given, return only that many tags; otherwise, return all.
-        If ascending is True, sort from a-z; otherwise, sort from z-a."""
-
+        If ascending is True, sort from a-z; otherwise, sort from z-a.
+        """
         from google.appengine.api import memcache
 
         cache_name = 'tags_by_name'
@@ -111,7 +118,6 @@ class Tag(db.Model):
                 
         return tags
         
-    
     @classmethod
     def popular_tags(cls, limit=5):
         from google.appengine.api import memcache
@@ -130,6 +136,7 @@ class Tag(db.Model):
         memcache.delete('popular_tags')
         memcache.delete('tags_by_name_asc')
         memcache.delete('tags_by_name_desc')
+
 
 class Taggable:
     """
@@ -162,10 +169,9 @@ class Taggable:
         return self.__tags
 
     def __set_tags(self, tags):
-        import types
         if type(tags) is types.UnicodeType:
             # Convert unicode to a plain string
-            #tags = str(tags)
+            # tags = str(tags)
             tags = string.split(tags, self.tag_separator)
         if type(tags) is types.StringType:
             # Tags is a string, split it on tag_seperator into a list
@@ -192,7 +198,8 @@ class Taggable:
                     tag.add_tagged(self.key())
                     self.__tags.append(tag)
         else:
-            raise Exception, "tags must be either a unicode, a string or a list"
+            raise Exception, "tags must be either a unicode, a string or a \
+                list!"
         
     tags = property(__get_tags, __set_tags, None, None)
     
@@ -205,6 +212,13 @@ class Taggable:
                 to_str += self.tag_separator
         return to_str
 
+class Category(db.Model):
+    """
+    The blog's category
+    """
+    title = db.StringProperty(required=True)
+    
+    
 class Entry(Taggable, db.Model):
     """
     The entries db table of blog
@@ -215,6 +229,18 @@ class Entry(Taggable, db.Model):
     date    = db.DateTimeProperty(auto_now_add=True)
     update  = db.DateTimeProperty(auto_now=True)
 
-    def __init__(self, parent=None, key_name=None, app=None, **entity_values):
+    def __init__(self, parent=None, key_name=None, app=None, \
+        **entity_values):
          db.Model.__init__(self, parent, key_name, app, **entity_values)
          Taggable.__init__(self)
+
+    def __unicode__(self):
+        return self.title
+        
+    def previous(self):
+        return Entry.gql("WHERE date < :1 \
+            ORDER by date DESC LIMIT 1", self.date).get()
+
+    def next(self):
+        return Entry.gql("WHERE date > :1 \
+            ORDER by date ASC LIMIT 1", self.date).get()

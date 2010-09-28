@@ -1,5 +1,17 @@
 {% extends "site.html" %}
 
+{% block menu %}
+<a href="/">home</a>
+<a href="/archive">archive</a>
+{% if session.logged_in %}
+<a href="/dashboard" class="active">dashboard</a>
+<a href="{{ url_for('logout') }}">logout</a>
+{% else %}
+<a href="{{ url_for('login') }}">login</a>
+{% endif %}
+<a href="http://feeds.feedburner.com/MarkRentonsBlog">feed</a>
+{% endblock %}
+
 {% block extra_head %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='markitup/skins/simple/style.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='markitup/sets/html/style.css') }}" />
@@ -13,22 +25,37 @@ $(document).ready(function()	{
    $('#html').markItUp(mySettings);
 });
 </script>
-{% if session.logged_in %}
 <div class="content">
-<form action="{{ url_for('add') }}" method="post" class="add-entry">
-  <dl>
-    <dt>Title:</dt>
-    <dd><input type="text" name="title" /></dd>
-    <dt>Slug:</dt>
-    <dd><input type="text" name="slug" /></dd>
-    <dt>Text:</dt>
-    <dd><textarea name="content" rows="20" cols="60" id="html"></textarea></dd>
-    <dt>Tags:</dt>
-    <dd><input type="text" name="tags" /></dd>
-    <dd><input type="submit" value="Post" class="post" /></dd>
-  </dl>
-</form>
+    <div class="dashboard_panel">
+        <ul>
+        {% block dashboard_menu %}
+            <li><a href="{{ url_for('dashboard') }}" class="dashboard_active">Entries List</a></li>
+            <li><a href="{{ url_for('dashboard') }}/add">Add Entries</a></li>
+        {% endblock %}
+        </ul> 
+    </div>
+    <div class="dashboard_main">
+    {% block dashboard %}
+    <ul class="entries">
+    {% for entry in entries %}
+        <li>
+            <h3><a href="entry/{{ entry.slug }}" title="published: {{ entry.date }}">{{ entry.title }}</a></h3>
+            <p class="tool"><a href="/entry/{{ entry.slug }}/edit">edit</a><a href="/entry/{{ entry.slug }}/del">delete</a></p>
+            <div class="clear"></div>
+            {% if entry.tags %}
+            <div class="posttags">tags:
+            {% for each_tag in entry.tags %}
+                <a href="/tags/{{ each_tag.tag|escape }}">{{ each_tag.tag }}</a>
+            {% endfor %}
+            </div>
+            {% endif %}
+        </li>
+        <div class="break_line"></div>
+    {% else %}
+        <li><em>No blog entries yet! Log in and add one.</em></li>
+    {% endfor %}
+    </ul>
+    {% endblock %}
+    </div>
 </div>
-{% endif %}
-
 {% endblock %}

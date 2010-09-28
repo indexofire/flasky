@@ -12,6 +12,7 @@ $(document).ready(function()	{
    $('#html').markItUp(mySettings);
 });
 </script>
+<div class="content">
 <form action="/entry/{{ entry.slug }}/edit" method="post" class="add-entry">
   <dl>
     <dt>Title:</dt>
@@ -25,5 +26,5 @@ $(document).ready(function()	{
     <dd><input type="submit" value="Post" class="post"></dd>
   </dl>
 </form>
+<div>
 {% endblock %}
-

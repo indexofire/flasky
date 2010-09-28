@@ -1,5 +1,17 @@
 {% extends "site.html" %}
 
+{% block menu %}
+<a href="/">home</a>
+<a href="/archive" class="active">archive</a>
+{% if session.logged_in %}
+<a href="/dashboard">dashboard</a>
+<a href="{{ url_for('logout') }}">logout</a>
+{% else %}
+<a href="{{ url_for('login') }}">login</a>
+{% endif %}
+<a href="http://feeds.feedburner.com/MarkRentonsBlog">feed</a>
+{% endblock %}
+
 {% block body %}
 <table class="entry_table">
   <tr>
@@ -21,4 +33,4 @@
   </tr>
 {% endfor %}
 </table>
-{% endblock body %}
+{% endblock %}

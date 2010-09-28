@@ -11,9 +11,7 @@ from google.appengine.ext.search import SearchableQuery, SearchableMultiQuery
 from google.appengine.api import datastore_errors, users
 
 
-"""
-Decorator
-"""
+# Decorator
 def login_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
@@ -23,19 +21,17 @@ def login_required(func):
     return decorated_view
 
 
-"""
-Pager
-"""
+# Pager
 # Regex borrowed from google.appengine.api.datastore.
 OPERATORS = ['<', '<=', '>', '>=', '=', '==']
 INEQUALITY_OPERATORS = ['<', '<=', '>', '>=']
-FILTER_REGEX = re.compile(
-    '^\s*([^\s]+)(\s+(%s)\s*)?$' % '|'.join(OPERATORS),
+FILTER_REGEX = re.compile('^\s*([^\s]+)(\s+(%s)\s*)?$' % '|'.join(OPERATORS),
     re.IGNORECASE | re.UNICODE)
 
+
 class PagerQuery(object):
-    """Wraps db.Query to build bookmarkable queries, and to resume queries from
-    bookmarks.
+    """Wraps db.Query to build bookmarkable queries, and to resume queries
+    from bookmarks.
     """
     _query_class = db.Query
 
@@ -43,8 +39,9 @@ class PagerQuery(object):
         """Constructs a bookmarkable query over instances of the given Model.
 
         Args:
-          model_class: Model class to build query for.
-          keys_only: Whether the query should return full entities or only keys.
+            model_class: Model class to build query for.
+            keys_only: Whether the query should return full entities or only
+            keys.
         """
         self._model_class = model_class
         self._keys_only = keys_only
@@ -63,21 +60,23 @@ class PagerQuery(object):
         """Adds a filter to query.
 
         Args:
-          property_operator: string with the property and operator to filter by.
-          value: the filter value.
+            property_operator: string with the property and operator to filter
+            by.
+
+            value: the filter value.
 
         Returns:
-          Self to support method chaining.
+            Self to support method chaining.
 
         Raises:
-          BadArgumentError if invalid property is provided or two different
-          inequality properties are set for the same query.
+            BadArgumentError if invalid property is provided or two different
+            inequality properties are set for the same query.
         """
         prop, operator = match_filter(property_operator)
         if operator in INEQUALITY_OPERATORS:
             if self._inequality_prop and self._inequality_prop != prop:
-                raise datastore_errors.BadArgumentError('Queries must have '
-                    'only one inequality operator.')
+                raise datastore_errors.BadArgumentError('Queries must have \
+                    only one inequality operator.')
             self._inequality_prop = prop
             self._inequality_filters[operator] = value
 
@@ -87,21 +86,21 @@ class PagerQuery(object):
         elif operator in OPERATORS:
             self._filters[prop] = value
         else:
-            raise datastore_errors.BadArgumentError('Filter operator is not '
-                'valid, received %s.' % operator)
+            raise datastore_errors.BadArgumentError('Filter operator is not \
+                valid, received %s.' % operator)
         return self
 
     def order(self, prop):
         """Sets order of query result.
 
-        To use descending order, prepend '-' (minus) to the property
-        name, e.g., '-date' rather than 'date'.
+        To use descending order, prepend '-' (minus) to the property name,
+        e.g., '-date' rather than 'date'.
 
         Args:
-          property: Property to sort on.
+            property: Property to sort on.
 
         Returns:
-          Self to support method chaining.
+            Self to support method chaining.
         """
         direction = ''
         if prop.startswith('-'):
@@ -124,27 +123,27 @@ class PagerQuery(object):
         ancestor itself is also a possible result!
 
         Args:
-          ancestor: Model or Key (that has already been saved)
+            ancestor: Model or Key (that has already been saved)
 
         Returns:
-          Self to support method chaining.
+            Self to support method chaining.
         """
         self._ancestor = ancestor
         return self
 
     def fetch(self, limit, bookmark=None):
-        """Fetches the query results, returning bookmarks for next and previous
-        pages if available. If bookmark is provided, the query is resumed from
-        that bookmark.
+        """Fetches the query results, returning bookmarks for next and
+        previous pages if available. If bookmark is provided, the query is
+        resumed from that bookmark.
 
         Args:
-          limit: Maximum number of results to return.
-          bookmark: Encoded values of the query to be resumed.
+            limit: Maximum number of results to return.
+            bookmark: Encoded values of the query to be resumed.
 
         Returns:
-          A tuple (prev, res, next), where 'prev' and 'next' are bookmarks
-          for the next and previous pages and 'res' is a list of db.Model
-          instances for the current page.
+            A tuple (prev, res, next), where 'prev' and 'next' are bookmarks
+            for the next and previous pages and 'res' is a list of db.Model
+            instances for the current page.
         """
         # If the query has an inequality filter but no sort order:
         # appends an ASC sort order on the inequality property.
@@ -284,10 +283,10 @@ class PagerQuery(object):
         """Builds a db.Query.
 
         Returns:
-          A google.appengine.ext.db.Query instance.
+            A google.appengine.ext.db.Query instance.
         """
-        #query = self.__class__._query_class(self._model_class,
-        #    keys_only=self._keys_only)
+        # query = self.__class__._query_class(self._model_class,
+        #     keys_only=self._keys_only)
         if issubclass(self._model_class, db.polymodel.PolyModel):
             query = self._model_class.all()
         else:
@@ -314,7 +313,7 @@ class PagerQuery(object):
         and the key_name or id of the very first result of the first page.
 
         Returns:
-          A dictionary of property names/values to build a bookmark.
+            A dictionary of property names/values to build a bookmark.
         """
         if self._keys_only:
             # When fetching only keys, we still need to get an entity to
@@ -340,17 +339,18 @@ class PagerQuery(object):
 
     def _get_query_values(self, bookmark):
         """Decodes a bookmark and returns the values to be used on queries.
+
         Currently supported properties are:
-          DateProperty
-          DateTimeProperty
-          FloatProperty
-          IntegerProperty
-          StringProperty
-          ReferenceProperty
-          TimeProperty
+            DateProperty
+            DateTimeProperty
+            FloatProperty
+            IntegerProperty
+            StringProperty
+            ReferenceProperty
+            TimeProperty
 
         Returns:
-          A dictionary of property names/values to be used in queries.
+            A dictionary of property names/values to be used in queries.
         """
         required = list(self._bookmark_properties)
         required.append('_')
@@ -397,10 +397,10 @@ class SearchablePagerQuery(PagerQuery):
             """Adds a full text search to this query.
 
             Args:
-              search_query, a string containing the full text search query.
+                search_query, a string containing the full text search query.
 
             Returns:
-              self
+                self
             """
             self._search_query = search_query
             return self
@@ -427,28 +427,22 @@ class SearchablePagerQuery(PagerQuery):
             query.search(self._search_query)
         return query
 
-
 def match_filter(prop_operator):
     """Returns the property and operator given a value passed to filter()."""
     matches = FILTER_REGEX.match(prop_operator)
     return (matches.group(1), matches.group(3))
 
-
 def encode_bookmark(values):
     """Encodes a dictionary into a string."""
     return b64encode(urlencode(values))
-
 
 def decode_bookmark(bookmark):
     """Decodes a string into a bookmark dictionary."""
     return dict(parse_qsl(b64decode(bookmark)))
 
 
-# borrowed from
-# http://kbyanc.blogspot.com/2007/09/python-reconstructing-datetimes-from.html
 def parse_datetime(s, format):
-    """Create datetime object representing date/time
-    expressed in a string.
+    """Create datetime object representing date/time expressed in a string.
 
     This is required because converting microseconds using strptime() is only
     supported in Python 2.6.
@@ -457,13 +451,17 @@ def parse_datetime(s, format):
     on a python datetime or time objects and returns a datetime
     instance that would produce that string.
 
-    Acceptable formats are: "YYYY-MM-DD HH:MM:SS.ssssss+HH:MM",
-                            "YYYY-MM-DD HH:MM:SS.ssssss",
-                            "YYYY-MM-DD HH:MM:SS+HH:MM",
-                            "YYYY-MM-DD HH:MM:SS"
-    Where ssssss represents fractional seconds.	 The timezone
-    is optional and may be either positive or negative
-    hours/minutes east of UTC.
+    Acceptable formats are:
+        "YYYY-MM-DD HH:MM:SS.ssssss+HH:MM",
+        "YYYY-MM-DD HH:MM:SS.ssssss",
+        "YYYY-MM-DD HH:MM:SS+HH:MM",
+        "YYYY-MM-DD HH:MM:SS"
+        Where ssssss represents fractional seconds. The timezone is optional
+        and may be either positive or negative hours/minutes east of UTC.
+
+    from: "http://kbyanc.blogspot.com/2007/09/python-reconstructing-datetime \
+    s-from.html"
+
     """
     if s is None:
         return None
@@ -471,8 +469,7 @@ def parse_datetime(s, format):
     # into its constituent date/time, microseconds, and
     # timezone fields where microseconds and timezone are
     # optional.
-    m = re.match(r'(.*?)(?:\.(\d+))?(([-+]\d{1,2}):(\d{2}))?$',
-                 str(s))
+    m = re.match(r'(.*?)(?:\.(\d+))?(([-+]\d{1,2}):(\d{2}))?$', str(s))
     datestr, fractional, tzname, tzhour, tzmin = m.groups()
 
     # Create tzinfo object representing the timezone
@@ -487,20 +484,17 @@ def parse_datetime(s, format):
         tzhour, tzmin = int(tzhour), int(tzmin)
         if tzhour == tzmin == 0:
             tzname = 'UTC'
-        tz = FixedOffset(timedelta(hours=tzhour,
-                                   minutes=tzmin), tzname)
+        tz = FixedOffset(timedelta(hours=tzhour, minutes=tzmin), tzname)
 
-    # Convert the date/time field into a python datetime
-    # object.
+    # Convert the date/time field into a python datetime object.
     x = datetime.strptime(datestr, format)
 
-    # Convert the fractional second portion into a count
-    # of microseconds.
+    # Convert the fractional second portion into a count of microseconds.
     if fractional is None:
         fractional = '0'
     fracpower = 6 - len(fractional)
     fractional = float(fractional) * (10 ** fracpower)
 
-    # Return updated datetime object with microseconds and
-    # timezone information.
+    # Return updated datetime object with microseconds and timezone
+    # information.
     return x.replace(microsecond=int(fractional), tzinfo=tz)

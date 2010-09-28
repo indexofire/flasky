@@ -23,8 +23,23 @@
         <a href="/tags/{{ each_tag.tag|escape }}">{{ each_tag.tag }}</a>
         {% endfor %}
     </div>
-
-    <hr/>
+    <p>
+        <span>Previous:
+        {% if entry.previous() %}
+        <a href="/entry/{{ entry.previous().slug }}">{{ entry.previous().title }}</a>
+        {% else %}
+        <a href="#">None</a>
+        {% endif %}
+        </span>
+        <span style="float:right;margin-right:15px">Next:
+        {% if entry.next() %}
+        <a href="/entry/{{ entry.next().slug }}">{{ entry.next() }}</a>
+        {% else %}
+        <a href="#">None</a>
+        {% endif %}
+        </span>
+    </p>
+    <div class="break_line"></div>
     <a href="entry/{{ entry.slug }}#disqus_thread">Comments</a>
 
     <div id="disqus_thread"></div>

@@ -18,20 +18,19 @@
         <div id="head">
             <a class="title" href="/">Mark Renton's Blog</a>
             <div class="menu">
-                <a href="/">home</a>
+            {% block menu %}
+                <a href="/" class="active">home</a>
                 <a href="/archive">archive</a>
                 {% if session.logged_in %}
-                <a href="/dashboard">add</a>
+                <a href="/dashboard">dashboard</a>
                 <a href="{{ url_for('logout') }}">logout</a>
                 {% else %}
                 <a href="{{ url_for('login') }}">login</a>
                 {% endif %}
                 <a href="http://feeds.feedburner.com/MarkRentonsBlog">feed</a>
+            {% endblock %}
             </div>
         </div>
-
-
-
 
         <div id="main">
         

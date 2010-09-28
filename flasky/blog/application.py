@@ -2,11 +2,11 @@
 from datetime import datetime
 from urlparse import urljoin
 from google.appengine.ext import db
-from flask import render_template, redirect, url_for, request, abort, flash, \
-    session, get_flashed_messages
+from flask import render_template, redirect, url_for, request, abort, \
+    flash, session, get_flashed_messages
 from werkzeug.contrib.atom import AtomFeed
 from blog import app
-from blog.models import Entry, Tag, Taggable
+from blog.models import *
 
 
 def make_external(url):
@@ -102,7 +102,8 @@ def entry(slug):
     if entry is None:
         error = "Can't find the blog entry"
         return render_template('error.html', error=error)
-    return render_template('entry.html', entry=entry[0])
+    tags = Tag.popular_tags()
+    return render_template('entry.html', entry=entry[0], tags=tags)
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -140,7 +141,14 @@ def delete(slug):
 def dashboard():
     if not session.get('logged_in'):
         abort(401)
-    return render_template('dashboard.html')
+    entries = Entry.all().order('-date')
+    return render_template('dashboard.html', entries=entries)
+
+@app.route('/dashboard/add')
+def dashboard_add():
+    if not session.get('logged_in'):
+        abort(401)
+    return render_template('dashboard_add.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

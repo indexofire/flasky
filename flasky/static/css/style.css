@@ -5,9 +5,8 @@ html {
     font-size: 100.01%;
 }
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td {
-    margin:0;
+    margin:0 0 1em 0;
     padding:0;
-    margin-bottom: 1em;
 }
 table {
     border-collapse:collapse;
@@ -68,7 +67,7 @@ a img {
 
 /* ----------- html element define -------------*/
 body {
-    margin: 20px;
+    margin: 20px 0px;
     font-family: "Helvetica Neue", Arial, Helvetica, 雅黑, simsun, sans-serif;
     line-height: 125%;
     font-size: 80%;
@@ -167,6 +166,7 @@ h6 {
     background: #F8F8F8;
     margin: 0px;
     border-bottom: 1px dashed #CCC;
+    min-height: 640px;
 }
 #main table {
     width: 100%;
@@ -181,7 +181,7 @@ h6 {
 .right {
     width: 30%;
     margin: 0;
-    padding: 10px;
+    padding: 10px 10px 0px 0px;
 }
 .right div.title {
     background: #ECECEC;
@@ -279,7 +279,7 @@ pre, code, tt {
     text-decoration: none;
 }
 .break_line {
-    margin: 2em 1.2em;
+    margin: 2em 0.4em;
     border-top: 1px solid #DEDEDE;
     border-bottom: 1px solid #FFF;
 }
@@ -288,14 +288,16 @@ pre, code, tt {
     margin: 0em;
     padding: 1em 2em;
 }
-.entry_table {
-    width: 95%;
-    border: 1px solid #ECECEC;
+#main .entry_table {
+    width: 98%;
+    border: 1px dashed #CCC;
     margin: 10px;
+    background: #FFF;
 }
-.entry_table td,
-.entry_table th {
-    padding: 0.8em;
+#main .entry_table td,
+#main .entry_table th {
+    padding: 0.4em;
+    border-bottom: 1px dotted #EEE;
 }
 .posttags a {
     margin: 0em;
@@ -340,4 +342,47 @@ li.dsq-widget-item img {
     border: 2px solid #ACACAC;
     padding: 1px;
     margin: 4px;
+}
+li.dsq-widget-item p.dsq-widget-meta {
+    text-align: right;
+}
+#head a.active {
+    background: #393939;
+    color: #E8E8E8;
+    text-shadow: 1px 1px 1px #111;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+.dashboard_panel {
+    float: left;
+    width: 220px;
+    padding-top: 10px;
+}
+.dashboard_panel ul {
+    float: right;
+    padding-right: 20px;
+}
+.dashboard_panel ul li {
+    text-align: right;
+    padding: 5px 10px;
+}
+.dashboard_title {
+    background: #ECECEC;
+    color: dimGray;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 4px;
+}
+.dashboard_main {
+    margin-left: 250px;
+    padding-top: 15px;
+}
+.dashboard_active {
+    background: #393939;
+    color: #E8E8E8;
+    text-shadow: 1px 1px 1px #111;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: -10px;
 }
