@@ -46,13 +46,13 @@ def tag_size(value):
         tag_num.append(tag.tagged_count)
     t_min = min(tag_num)
     t_max = max(tag_num)
-    
+
     if t_max == t_min:
         t_max = t_max + 1
-    
+
     factor = 5.0/float(t_max - t_min)
     return 6 - (t_max - value)*factor
-    
+
 @app.route('/recent')
 def recent_feed():
     feed = AtomFeed("Mark Renton's Blog", feed_url=request.url, url=request.url_root)
